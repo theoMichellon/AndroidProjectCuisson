@@ -16,12 +16,14 @@
         <!-- couleur -->
         <item name="android:textColor">@color/brun</item>
     </style>
+
     <!-- **************************
                   Bouton
          ************************** -->
     <style name="btn">
         <item name="android:backgroundTint">@color/brun</item>
     </style>
+
     <!-- **************************
             Titre des elements
          ************************** -->
@@ -39,6 +41,7 @@
         <!-- couleur -->
         <item name="android:textColor">@color/couleur_item_liste</item>
     </style>
+
     <!-- **************************
             Titre des elements
          ************************** -->
