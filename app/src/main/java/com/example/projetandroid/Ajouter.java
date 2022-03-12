@@ -22,6 +22,9 @@ public class Ajouter extends AppCompatActivity {
     private Button effacer;
     private Button ajouter;
 
+    // Déclaration des variables
+    private int temperatureCuisson;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,17 @@ public class Ajouter extends AppCompatActivity {
     }
 
     /**
+     * Méthode permettant d'appeler la feneêtre de dialogue en cas d'erreur
+     */
+    public void alerte() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.erreurTitre)
+                .setMessage(R.string.texte)
+                .setNeutralButton(R.string.btnRetour, null)
+                .show();
+    }
+
+    /**
      * Méthode permettant de réinitilialiser chaque input de la vue
      */
     public void clicEffacer(View bouton) {
@@ -58,10 +72,23 @@ public class Ajouter extends AppCompatActivity {
     }
 
     public void clicAjouter(View bouton) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.erreurTitre)
-                .setMessage(R.string.texte)
-                .setNeutralButton(R.string.btnRetour, null)
-                .show();
+
+        if (!nomPlat.getText().toString().isEmpty()) {
+            if (nomPlat.getText().toString().indexOf('|') != -1) {
+                alerte();
+            } else if (tempsCuisson.getMinute() == 0
+                       && tempsCuisson.getHour() == 0) {
+                alerte();
+            } else if (tempsCuisson.getHour() >= 9) {
+                alerte();
+            } else if (!temperature.getText().toString().isEmpty()) {
+                temperatureCuisson = Integer.parseInt(temperature.getText()
+                                                      .toString());
+                if (temperatureCuisson < 1 || temperatureCuisson > 300) {
+                    alerte();
+                }
+            }
+
+        }
     }
 }
