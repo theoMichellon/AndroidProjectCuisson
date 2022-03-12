@@ -25,18 +25,30 @@
     <!-- **************************
             Titre des elements
          ************************** -->
-    <style name="titre_list">
+    <style name="titre_element">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <!-- padding -->
+        <!-- padding
         <item name="android:paddingTop">@dimen/padding_liste</item>
         <item name="android:paddingBottom">@dimen/padding_liste</item>
+        -->
         <!-- Style text -->
         <item name="android:textSize">@dimen/taille_texte_liste</item>
         <item name="android:typeface">monospace</item>
         <item name="android:textStyle">bold</item>
-        <!-- position titre -->
-        <item name="android:gravity">right</item>
+        <!-- couleur -->
+        <item name="android:textColor">@color/couleur_item_liste</item>
+    </style>
+    <!-- **************************
+            Titre des elements
+         ************************** -->
+    <style name="element_list">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!-- Style text -->
+        <item name="android:textSize">@dimen/taille_texte_liste</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textStyle">bold</item>
         <!-- couleur -->
         <item name="android:textColor">@color/couleur_item_liste</item>
     </style>

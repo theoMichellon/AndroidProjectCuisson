@@ -220,7 +220,7 @@ public class OutilCuisson {
      * @param nbEspace      nombre d'espaces à placer dans la chaîne
      * @return  une chaîne constituée du caractère espace
      */
-    private static String chaineEspace(int nbEspace) {
+    public static String chaineEspace(int nbEspace) {
         StringBuilder aRenvoyer = new StringBuilder();
         for (int i = 1; i <= nbEspace; i++) {
             aRenvoyer.append(" ");

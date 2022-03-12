@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <!-- titre onglet -->
+    <string name="titre_onglet_afficher">"Temps de cuisson"</string>
+    <!-- Affichage -->
+    <string name="Plat">"Plat"</string>
+    <string name="Durree">"Durrée"</string>
+    <string name="Degres">"Degrés"</string>
+</resources>
