@@ -1,4 +1,2 @@
-package com.example.projetandroid;
-
-public class Afficher {
+package com.example.projetandroid;public class Afficher {
 }

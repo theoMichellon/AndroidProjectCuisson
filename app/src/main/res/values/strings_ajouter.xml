@@ -1,2 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <!-- String statique de la vue de base -->
+    <string name="titre">"Description d'un plat"</string>
+    <string name="lblPlat">"Plat"</string>
+    <string name="lblDuree">"Durée de la cuisson"</string>
+    <string name="lblTemp">"Température"</string>
+    <string name="btnEffacer">"Effacer"</string>
+    <string name="btnAjouter">"Ajouter"</string>
+
+    <!-- String apparissant dans le Toast validation -->
+    <string name="ajoute">"Le plat %s a bien été ajouté à la liste"</string>
+
+    <!-- Message d'erreur alerte dialogue -->
+    <string name="erreurTitre">"Erreur de saisie"</string>
+
+    <string name="texte">
+        "L'une des informations saisies est incorrecte :
+        - nom du plat vide ou contient |
+        - durée de cuisson nulle ou trop grande
+        - température nulle ou supérieure à 300 degrès
+
+        Vérifiez les valeurs saisies !"
+    </string>
+
+    <string name="btnRetour">"Retour"</string>
+</resources>

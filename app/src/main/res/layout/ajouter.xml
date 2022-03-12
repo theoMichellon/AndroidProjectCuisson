@@ -1,6 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:gravity="center"
+        android:text="@string/titre"
+        />
+
+    <TableRow>
+        <TextView
+            android:text="@string/lblPlat"
+            />
+        <EditText
+            android:id="@+id/txtPlat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="2"
+            android:layout_column="1"
+            />
+    </TableRow>
+
+    <TextView
+        android:text="@string/lblDuree" />
+
+    <TableRow>
+        <TimePicker
+            android:id="@+id/tempsCuisson"
+            android:layout_column="1"
+            android:timePickerMode="spinner"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/lblTemp" />
+        <EditText
+            android:id="@+id/txtTemp"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_span="1"
+            android:layout_column="2"
+            />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:id="@+id/btnEffacer"
+            android:text="Effacer"
+            android:layout_span="1"
+            android:layout_column="1"
+            android:onClick="clicEffacer"
+            />
+        <Button
+            android:id="@+id/btnValider"
+            android:text="Ajouter"
+            android:layout_column="2"
+            android:onClick="clicAjouter"
+            />
+    </TableRow>
+
+</TableLayout>
+
