@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- **************************
+              Titre des pages
+         ************************** -->
     <style name="titre_page">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -13,9 +16,15 @@
         <!-- couleur -->
         <item name="android:textColor">@color/brun</item>
     </style>
+    <!-- **************************
+                  Bouton
+         ************************** -->
     <style name="btn">
         <item name="android:backgroundTint">@color/brun</item>
     </style>
+    <!-- **************************
+            Titre des elements
+         ************************** -->
     <style name="titre_list">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
