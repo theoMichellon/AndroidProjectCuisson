@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_liste">20dip</dimen>
+    <dimen name="taille_texte_liste">15dip</dimen>
+
+    <!-- Dimenssion des boutons de l'onglet ajouter -->
+    <dimen name="marginRight">10dp</dimen>
+    <dimen name="longueurBtn">110dp</dimen>
+    <dimen name="hauteurBtn">50dp</dimen>
+
+    <!-- Margin des textes de l'onglet ajouter -->
+    <dimen name="marginLeft">5dp</dimen>
+
+    <!-- Margin pour editText -->
+    <dimen name="marginDroit">10dp</dimen>
+</resources>
