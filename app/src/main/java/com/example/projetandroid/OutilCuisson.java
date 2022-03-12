@@ -51,7 +51,7 @@ public class OutilCuisson {
     /**
      * Nombre maximum de caractères pour le nom du plat
      */
-    private static final int LG_MAX_PLAT = 18;
+    private static final int LG_MAX_PLAT = 20;
 
 
     /**
