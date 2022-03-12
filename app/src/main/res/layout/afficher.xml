@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        style="@style/titre_page"
+        android:text="Temps de cuisson"/>
+
+    <TextView
+        style="@style/titre_element"
+        android:id="@+id/titre_list"/>
+
+    <ListView
+        style="@style/element_list"
+        android:id="@+id/List_element"/>
+</TableLayout>

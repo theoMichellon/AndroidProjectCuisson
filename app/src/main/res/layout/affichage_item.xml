@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+
+    <!--  Ce fichier décrit l'aspect visuel des items de la liste des cuissons.
+    - Le texte sera affiché en gras avec une taille bien précise.
+    - La police de caractères est une police à chasse fixe.
+    (dans le but que les 3 informations : nom du plat, temps de cuisson et
+    température soient bien alignées)
+    Un padding est ajouté autour du texte -->
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ligne"
+        android:typeface="monospace"
+        android:textStyle="bold"
+        android:textSize="@dimen/taille_texte_liste"
+        android:paddingTop="@dimen/padding_liste"
+        android:paddingBottom="@dimen/padding_liste"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/couleur_item_liste"/>
+</LinearLayout>
