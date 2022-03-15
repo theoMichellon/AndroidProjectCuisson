@@ -40,11 +40,11 @@ public class Afficher extends AppCompatActivity{
         /* *********************** */
         /* Affichage titre colonne */
         /* *********************** */
-        //        Plat      Durée    Degrés
-        titre_list.setText(chaineEspace(8) +"Plat" + chaineEspace(6) + "Durée" + chaineEspace(4) + "Degrés");
+        //Plat              Durée      Degrés
+        titre_list.setText("Plat" + chaineEspace(10) + "Durée" + chaineEspace(6) + "Degrés"+ chaineEspace(2));
 
 
-        String premierelement = transformeEnChaine("Pizza", 0, 22, -50) ;
+        String premierelement = transformeEnChaine("Pizza", 0, 22, 50) ;
         String secondElement = transformeEnChaine("Gratin dauphinois", 0, 50, 180);
         String troisiemeElement = transformeEnChaine("Tarte aux pommes", 0, 40, 205);
 
