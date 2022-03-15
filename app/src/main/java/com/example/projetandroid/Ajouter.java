@@ -3,6 +3,7 @@ package com.example.projetandroid;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,9 +11,12 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 public class Ajouter extends AppCompatActivity {
 
@@ -73,8 +77,39 @@ public class Ajouter extends AppCompatActivity {
     }
 
     /**
+     *
+     */
+    public void persistance(String plat, int heure, int minutes, int temperature) {
+
+        /* On insère toutes les valeurs dans le stringBuilder */
+        recette.append(plat);
+        recette.append(';');
+        recette.append(heure);
+        recette.append(';');
+        recette.append(minutes);
+        recette.append(';');
+        recette.append(temperature);
+
+        /* Ajout dans le fichier textes des nouvelles données */
+
+        try {
+            String coucou = "coucou";
+            // déclaration et création de l'objet fichier
+            // OutputStreamWriter fichier = new OutputStreamWriter(this.openFileOutput("cuisson.txt"));
+            FileOutputStream fichier = openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
+            fichier.println(coucou.getBytes());
+            fichier.close();
+
+        } catch (IOException ex) {
+            System.out.println("Problème d'accès au fichier");
+        }
+    }
+
+
+    /**
      * Méthode permettant de réinitilialiser chaque input de la vue à son état
      * intial.
+     * @param bouton bouton sur lequel on clique pour appeler cette méthode
      */
     public void clicEffacer(View bouton) {
 
@@ -95,9 +130,13 @@ public class Ajouter extends AppCompatActivity {
      * Sinon insertion dans un fichier texte de la nouvelle recette ajouté et
      * affichage d'un message toast validant l'action.
      *
-     * @param bouton
+     * @param bouton bouton sur lequel on clique pour appeler cette méthode
      */
     public void clicAjouter(View bouton) {
+
+        // On prépare le message à afficher dans le toast en cas de validation
+        messsageToast = String.format(getResources()
+                .getString(R.string.ajoute), plat);
 
         if (!nomPlat.getText().toString().isEmpty()) {
             if (nomPlat.getText().toString().indexOf('|') != -1) {
@@ -113,40 +152,19 @@ public class Ajouter extends AppCompatActivity {
                 if (temperatureCuisson < 1 || temperatureCuisson > 300) {
                     alerte();
                 } else {
+                    plat = nomPlat.getText().toString();
                     heure = tempsCuisson.getHour();
                     minutes = tempsCuisson.getMinute();
+
+                    persistance(plat, heure, minutes, temperatureCuisson);
+                    Toast.makeText(this, messsageToast, Toast.LENGTH_LONG)
+                            .show();
                 }
             } else {
-                plat = nomPlat.getText().toString();
+                alerte();
             }
-        }
-
-        // On prépare le message à afficher dans le toast en cas de validation
-        messsageToast = String.format(getResources()
-                        .getString(R.string.ajoute), plat);
-
-        /* On insère toutes les valeurs dans le stringBuilder */
-        recette.append(plat);
-        recette.append(';');
-        recette.append(heure);
-        recette.append(';');
-        recette.append(minutes);
-        recette.append(';');
-        recette.append(temperatureCuisson);
-
-        /* Ajout dans le fichier textes des nouvelles données */
-        try {
-
-            // déclaration et création de l'objet fichier
-            PrintWriter fichier = new PrintWriter(new FileWriter(NOM_FICHIER));
-            fichier.println(String.valueOf(recette));
-            fichier.close();
-
-            Toast.makeText(this, messsageToast, Toast.LENGTH_LONG)
-                    .show();
-
-        } catch (IOException ex) {
-            System.out.println("Problème d'accès au fichier");
+        } else {
+            alerte();
         }
     }
 }
