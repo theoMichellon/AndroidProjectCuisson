@@ -97,7 +97,7 @@ public class Ajouter extends AppCompatActivity {
             // déclaration et création de l'objet fichier
             // OutputStreamWriter fichier = new OutputStreamWriter(this.openFileOutput("cuisson.txt"));
             FileOutputStream fichier = openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
-            fichier.println(coucou.getBytes());
+            fichier.write(coucou.getBytes());
             fichier.close();
 
         } catch (IOException ex) {
