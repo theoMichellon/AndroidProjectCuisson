@@ -2,8 +2,20 @@
 <resources>
     <!-- titre onglet -->
     <string name="titre_onglet_afficher">"Temps de cuisson"</string>
+
     <!-- Affichage -->
     <string name="Plat">"Plat"</string>
     <string name="Durree">"Durrée"</string>
     <string name="Degres">"Degrés"</string>
+
+    <!-- Menu contextuel -->
+    <string name="option1">"Supprimer"</string>
+    <string name="option2">"Voir thermostat"</string>
+    <string name="option3">"Annuler"</string>
+
+    <!-- Alerte dialogue -->
+    <string name="ad_titre">"Equivalent thermostat"</string>
+    <string name="ad_message">"Cuisson du plat : %s \n\nPour obtenir la température de %d °C vous devez avoir régler votre four sur le thermostat %d</string>
+    <string name="ad_texteRetour">"Retour"</string>
+
 </resources>
