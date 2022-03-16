@@ -43,6 +43,10 @@ public class Afficher extends Fragment implements AdapterView.OnItemClickListene
      */
     private static final String TAG = "RecetteTP";
 
+    // Déclaration du simpleAdaptateur
+    SimpleAdapter mSchedule;
+
+
     // Déclaration de la vue associée
     private View vueDuFragment;
 
@@ -78,8 +82,10 @@ public class Afficher extends Fragment implements AdapterView.OnItemClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        // Association à la vue du fragment
         vueDuFragment = inflater.inflate(R.layout.afficher, container, false);
 
+        // Liste des éléments à afficher
         List_element = vueDuFragment.findViewById(R.id.List_element);
         titre_list = vueDuFragment.findViewById(R.id.titre_list);
 
@@ -151,7 +157,7 @@ public class Afficher extends Fragment implements AdapterView.OnItemClickListene
         listItem.add(map);
 
         //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
-        SimpleAdapter mSchedule = new SimpleAdapter (this.getContext(), listItem, R.layout.affichage_item, new String[] {"ligne"},
+        mSchedule = new SimpleAdapter (this.getContext(), listItem, R.layout.affichage_item, new String[] {"ligne"},
                 new int[] {R.id.ligne});
 
         //On attribue à notre listView l'adapter que l'on vient de créer
@@ -239,6 +245,7 @@ public class Afficher extends Fragment implements AdapterView.OnItemClickListene
         }
         return -1;
     }
+
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         // on affiche le nom du pays sélectionné dans le label
         String messageToast = "" + listItem.get(position);

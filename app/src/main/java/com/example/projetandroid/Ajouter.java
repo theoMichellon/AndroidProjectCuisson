@@ -20,7 +20,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-public class Ajouter extends Fragment {
+public class Ajouter extends Fragment implements View.OnClickListener {
 
     // Déclaration de la vue
     private View vueDuFragment;
@@ -79,8 +79,8 @@ public class Ajouter extends Fragment {
         nomPlat = (EditText) vueDuFragment.findViewById(R.id.txtPlat);
         temperature = (EditText) vueDuFragment.findViewById(R.id.txtTemp);
 
-        effacer = (Button) vueDuFragment.findViewById(R.id.btnEffacer);
-        ajouter = (Button) vueDuFragment.findViewById(R.id.btnValider);
+        vueDuFragment.findViewById(R.id.btnValider).setOnClickListener(this);
+        vueDuFragment.findViewById(R.id.btnEffacer).setOnClickListener(this);
 
         // Formatage du spinner en h24 et non AM/PM
         tempsCuisson.setIs24HourView(true);
@@ -115,29 +115,27 @@ public class Ajouter extends Fragment {
         recette.append(minutes);
         recette.append(';');
         recette.append(temperature);
+        recette.append('\n');
 
         /* Ajout dans le fichier textes des nouvelles données */
 
-        /*try {
-            String coucou = "coucou";
+        try {
             // déclaration et création de l'objet fichier
-            // OutputStreamWriter fichier = new OutputStreamWriter(this.openFileOutput("cuisson.txt"));
-            FileOutputStream fichier =  openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
-            fichier.write(coucou.getBytes());
+            FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
+            fichier.write(String.valueOf(recette).getBytes());
             fichier.close();
 
         } catch (IOException ex) {
             System.out.println("Problème d'accès au fichier");
-        }*/
+        }
     }
 
 
     /**
      * Méthode permettant de réinitilialiser chaque input de la vue à son état
      * intial.
-     * @param bouton bouton sur lequel on clique pour appeler cette méthode
      */
-    public void clicEffacer(View bouton) {
+    public void effacer() {
 
         // On efface le texte entré dans les editText
         nomPlat.setText("");
@@ -155,10 +153,8 @@ public class Ajouter extends Fragment {
      * Affichage d'un message d'erreur si jamais il y a une erreur de saisie
      * Sinon insertion dans un fichier texte de la nouvelle recette ajouté et
      * affichage d'un message toast validant l'action.
-     *
-     * @param bouton bouton sur lequel on clique pour appeler cette méthode
      */
-    public void clicAjouter(View bouton) {
+    public void ajouter() {
 
         // On prépare le message à afficher dans le toast en cas de validation
         messsageToast = String.format(getResources()
@@ -191,6 +187,19 @@ public class Ajouter extends Fragment {
             }
         } else {
             alerte();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnEffacer:
+                effacer();
+                break;
+
+            case R.id.btnValider:
+                ajouter();
+                break;
         }
     }
 }
