@@ -1,57 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- vue de l'activité principale
+ Elle contient seulement un ViewPager dont le rôle sera d'afficher différents
+ fragments, selon le défilement ("glisser") effectué par l'utilisateur -->
+<androidx.viewpager2.widget.ViewPager2
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main_viewpager"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentTop="true">
-
-                <ImageView
-                    android:layout_width="250dp"
-                    android:layout_height="250dp"
-                    android:layout_margin="15dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/marmite_cuisson"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:layout_gravity="center"
-                    android:text="Application gestion des temps de cuisson"
-                    android:textStyle="bold"
-                    android:textSize="40px"
-                    android:textColor="@color/brun"/>
-                <Button
-                    style="@style/btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:layout_gravity="center"
-                    android:text="Continuer"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="5dp"
-                    android:text="Réaliser par Tatiana Borgi et Theo Michellon"
-                    android:textSize="40px"
-                    android:textStyle="bold" />
-        </LinearLayout>
-
-</RelativeLayout>
+    android:layout_height="match_parent"/>

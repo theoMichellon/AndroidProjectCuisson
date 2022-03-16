@@ -6,14 +6,17 @@ import static com.example.projetandroid.OutilCuisson.transformeEnChaine;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -29,7 +32,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Afficher extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class Afficher extends Fragment implements AdapterView.OnItemClickListener{
 
     /** Nom du fichier contenant les pays de l'union européenne */
     private static final String NOM_FICHIER = "cuisson.txt";
@@ -40,6 +43,10 @@ public class Afficher extends AppCompatActivity implements AdapterView.OnItemCli
      */
     private static final String TAG = "RecetteTP";
 
+    // Déclaration de la vue associée
+    private View vueDuFragment;
+
+
     public ListView List_element;
 
     public TextView titre_list;
@@ -49,13 +56,32 @@ public class Afficher extends AppCompatActivity implements AdapterView.OnItemCli
     /** Liste des recettes présentés par l'application */
     private ArrayList<String> list_recette;;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.afficher);
+    public Afficher() {
+        // Required empty public constructor
+    }
 
-        List_element = findViewById(R.id.List_element);
-        titre_list = findViewById(R.id.titre_list);
+    /**
+     * Cette méthode est une "factory" : son rôle est de créer une nouvelle instance
+     * du fragment de type FragmentUn
+     * @return A new instance of fragment FragmentUn.
+     */
+    public static Afficher newInstance() {
+        Afficher fragment = new Afficher();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        vueDuFragment = inflater.inflate(R.layout.afficher, container, false);
+
+        List_element = vueDuFragment.findViewById(R.id.List_element);
+        titre_list = vueDuFragment.findViewById(R.id.titre_list);
 
         /* *********************** */
         /* Affichage titre colonne */
@@ -84,7 +110,7 @@ public class Afficher extends AppCompatActivity implements AdapterView.OnItemCli
         list_recette = new ArrayList<>();
         String recetteLu;
         final String SEPARATEUR = ";";
-        try {
+        /*try {
             InputStreamReader fichier =
                     new InputStreamReader(openFileInput(NOM_FICHIER));
             BufferedReader fichierTexte = new BufferedReader(fichier);
@@ -107,7 +133,7 @@ public class Afficher extends AppCompatActivity implements AdapterView.OnItemCli
             Log.e(TAG, "Le fichier " + NOM_FICHIER + " n'existe pas.");
         } catch (IOException e) {
             Log.e(TAG, "Problème de lecture dans le fichier " + NOM_FICHIER);
-        }
+        }*/
 
 
         //on insère un élément titre que l'on récupérera dans le textView titre créé dans le fichier affichageitem.xml
@@ -125,7 +151,7 @@ public class Afficher extends AppCompatActivity implements AdapterView.OnItemCli
         listItem.add(map);
 
         //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
-        SimpleAdapter mSchedule = new SimpleAdapter (this.getBaseContext(), listItem, R.layout.affichage_item, new String[] {"ligne"},
+        SimpleAdapter mSchedule = new SimpleAdapter (this.getContext(), listItem, R.layout.affichage_item, new String[] {"ligne"},
                 new int[] {R.id.ligne});
 
         //On attribue à notre listView l'adapter que l'on vient de créer
@@ -133,11 +159,12 @@ public class Afficher extends AppCompatActivity implements AdapterView.OnItemCli
 
         registerForContextMenu(List_element);
 
+        return vueDuFragment;
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        new MenuInflater(this).inflate(R.menu.menu_context_item, menu);
+        new MenuInflater(getActivity()).inflate(R.menu.menu_context_item, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
 
@@ -169,7 +196,7 @@ public class Afficher extends AppCompatActivity implements AdapterView.OnItemCli
     private void AlerteMessage(String Plat, int temperature) {
         String message = getString(R.string.ad_message, Plat, temperature, calculTempérature(temperature));
 
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.ad_titre)
                 .setMessage(message)
                 .setNeutralButton(R.string.ad_texteRetour, null)
@@ -215,7 +242,7 @@ public class Afficher extends AppCompatActivity implements AdapterView.OnItemCli
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
         // on affiche le nom du pays sélectionné dans le label
         String messageToast = "" + listItem.get(position);
-        Toast.makeText(this, messageToast, Toast.LENGTH_LONG)
+        Toast.makeText(getActivity(), messageToast, Toast.LENGTH_LONG)
                 .show();
         System.out.print(messageToast);
     }

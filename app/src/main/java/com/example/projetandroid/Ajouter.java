@@ -1,11 +1,13 @@
 package com.example.projetandroid;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -18,7 +20,10 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-public class Ajouter extends AppCompatActivity {
+public class Ajouter extends Fragment {
+
+    // Déclaration de la vue
+    private View vueDuFragment;
 
     // Déclaration du fichier dans lequel les écritures vont se faire
     private static final String NOM_FICHIER = "cuisson.txt";
@@ -44,24 +49,45 @@ public class Ajouter extends AppCompatActivity {
     private int heure,
             minutes;
 
+    public Ajouter() {
+        // Required empty public constructor
+    }
+    /**
+     * Cette méthode est une "factory" : son rôle est de créer une nouvelle instance
+     * du fragment de type FragmentUn
+     * @return A new instance of fragment FragmentUn.
+     */
+    public static Ajouter newInstance() {
+        Ajouter fragment = new Ajouter();
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ajouter);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // On récupère la vue (le layout) associée au fragment un
+        vueDuFragment = inflater.inflate(R.layout.ajouter, container, false);
 
         // On récupère un accès sur les widgets de la vue
-        tempsCuisson = (TimePicker) findViewById(R.id.tempsCuisson);
+        tempsCuisson = (TimePicker) vueDuFragment.findViewById(R.id.tempsCuisson);
 
-        nomPlat = (EditText) findViewById(R.id.txtPlat);
-        temperature = (EditText) findViewById(R.id.txtTemp);
+        nomPlat = (EditText) vueDuFragment.findViewById(R.id.txtPlat);
+        temperature = (EditText) vueDuFragment.findViewById(R.id.txtTemp);
 
-        effacer = (Button) findViewById(R.id.btnEffacer);
-        ajouter = (Button) findViewById(R.id.btnValider);
+        effacer = (Button) vueDuFragment.findViewById(R.id.btnEffacer);
+        ajouter = (Button) vueDuFragment.findViewById(R.id.btnValider);
 
         // Formatage du spinner en h24 et non AM/PM
         tempsCuisson.setIs24HourView(true);
         tempsCuisson.setMinute(40);
         tempsCuisson.setHour(00);
+
+        return vueDuFragment;
     }
 
     /**
@@ -69,7 +95,7 @@ public class Ajouter extends AppCompatActivity {
      * appelé en cas d'erreur de saisie de la part de l'utilisateur
      */
     public void alerte() {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.erreurTitre)
                 .setMessage(R.string.texte)
                 .setNeutralButton(R.string.btnRetour, null)
@@ -92,17 +118,17 @@ public class Ajouter extends AppCompatActivity {
 
         /* Ajout dans le fichier textes des nouvelles données */
 
-        try {
+        /*try {
             String coucou = "coucou";
             // déclaration et création de l'objet fichier
             // OutputStreamWriter fichier = new OutputStreamWriter(this.openFileOutput("cuisson.txt"));
-            FileOutputStream fichier = openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
+            FileOutputStream fichier =  openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
             fichier.write(coucou.getBytes());
             fichier.close();
 
         } catch (IOException ex) {
             System.out.println("Problème d'accès au fichier");
-        }
+        }*/
     }
 
 
@@ -157,7 +183,7 @@ public class Ajouter extends AppCompatActivity {
                     minutes = tempsCuisson.getMinute();
 
                     persistance(plat, heure, minutes, temperatureCuisson);
-                    Toast.makeText(this, messsageToast, Toast.LENGTH_LONG)
+                    Toast.makeText(getActivity(), messsageToast, Toast.LENGTH_LONG)
                             .show();
                 }
             } else {
