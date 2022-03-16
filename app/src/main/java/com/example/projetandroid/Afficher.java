@@ -1,16 +1,13 @@
 package com.example.projetandroid;
 
-import static android.media.CamcorderProfile.get;
 import static com.example.projetandroid.OutilCuisson.chaineEspace;
 import static com.example.projetandroid.OutilCuisson.transformeEnChaine;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -18,21 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Afficher extends Fragment implements AdapterView.OnItemClickListener{
+public class Afficher extends Fragment{
 
     /** Nom du fichier contenant les pays de l'union européenne */
     private static final String NOM_FICHIER = "cuisson.txt";
@@ -181,27 +172,41 @@ public class Afficher extends Fragment implements AdapterView.OnItemClickListene
 
         // selon l'option sélectionnée dans le menu, on réalise le traitement adéquat
         switch(item.getItemId()) {
-            case R.id.option1: // suppression de l'article courant
+            case R.id.option1: // suppression de la ligne courrante
                 // on supprime de l'adaptateur l'article courant
                 //adaptateur.remove(listeAchat.get(information.position));
                 break;
             case R.id.option2: // voir thermostat
-                int i = information.position;
-                //String valeur =  listItem.get(i);
-                System.out.print("La positiion est :" +i + " et la valeur est :" );
-
-                AlerteMessage("Pizza", 30);
+                // récupération de la ligne de l'item
+                String s = "" + listItem.get(information.position);
+                // récupération du nom de plat et de la température
+                int maxCharPlat = 27;  // nbre de caractères max pour plat
+                int maxCharDegre = 4;  // nbre de caractères max pour degrées
+                int length = s.length(); // récupération taille de la ligne
+                String nomPlat = s.substring(7, maxCharPlat).trim();
+                String degree = s.substring(length -maxCharDegre, length-1);
+                // transformation String to int de la température
+                int temperature = Integer.parseInt(degree.trim());
+                // lancement message
+                AlerteMessage(nomPlat, temperature);
                 break;
             case R.id.option3: // annuler : retour à la list principale
                 break;
-
         }
         return (super.onContextItemSelected(item));
     }
 
+    /**
+     * Méthode qui permet d'afficher l'alerte dialogue pour voir
+     * le réglage du thermostat
+     *
+     * @param Plat : nom du plat
+     * @param temperature : température du plat
+     */
     private void AlerteMessage(String Plat, int temperature) {
+        // création du message à afficher
         String message = getString(R.string.ad_message, Plat, temperature, calculTempérature(temperature));
-
+        //lancement de l'alerte Dialogue
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.ad_titre)
                 .setMessage(message)
@@ -209,26 +214,23 @@ public class Afficher extends Fragment implements AdapterView.OnItemClickListene
                 .show();
     }
 
+    /**
+     * Méthode qui permet de savoir quel thermostat utiliser selon la tempéréature
+     *
+     * @param temperature : température du plat
+     * @return un int qui correspond au thermostat
+     */
     private int calculTempérature(int temperature){
-        int[] pallierTemperature = {
-                30,
-                60,
-                90,
-                120,
-                150,
-                180,
-                210,
-                240,
-                270
-        };
-
+        // tableau des différents pallier pour le thermostat
+        int[] pallierTemperature = {30,60,90,120,150,180,210,240,270};
+        // retourne la valeur du thermostat
         if(temperature < pallierTemperature[0]){
             return 1;
         } else if(temperature < pallierTemperature[1]){
             return 2;
         } else if(temperature < pallierTemperature[2]){
             return 3;
-        } else if(90 <= temperature && temperature < pallierTemperature[3]){
+        } else if(temperature < pallierTemperature[3]){
             return 4;
         } else if(temperature < pallierTemperature[4]){
             return 5;
@@ -236,9 +238,9 @@ public class Afficher extends Fragment implements AdapterView.OnItemClickListene
             return 6;
         } else if(temperature < pallierTemperature[6]){
             return 7;
-        } else if(temperature < pallierTemperature[7] ){
+        } else if(temperature < pallierTemperature[7]){
             return 8;
-        } else if(temperature < pallierTemperature[8]) {
+        } else if(temperature < pallierTemperature[8]){
             return 9;
         } else if(temperature <= pallierTemperature[9]){
             return 10;
