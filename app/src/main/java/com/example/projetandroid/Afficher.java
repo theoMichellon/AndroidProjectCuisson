@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -20,6 +21,10 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,10 +39,6 @@ public class Afficher extends Fragment{
      */
     private static final String TAG = "RecetteTP";
 
-    // Déclaration du simpleAdaptateur
-    SimpleAdapter mSchedule;
-
-
     // Déclaration de la vue associée
     private View vueDuFragment;
 
@@ -51,6 +52,8 @@ public class Afficher extends Fragment{
     /** Liste des recettes présentés par l'application */
     private ArrayList<String> list_recette;;
 
+    // Déclaration du simpleAdaptateur
+    public SimpleAdapter mSchedule;
     public Afficher() {
         // Required empty public constructor
     }
@@ -72,33 +75,26 @@ public class Afficher extends Fragment{
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        // Association à la vue du fragment
+        // déclaration fragement
         vueDuFragment = inflater.inflate(R.layout.afficher, container, false);
 
-        // Liste des éléments à afficher
+        // récupération des éléments
         List_element = vueDuFragment.findViewById(R.id.List_element);
         titre_list = vueDuFragment.findViewById(R.id.titre_list);
 
-        /* *********************** */
         /* Affichage titre colonne */
         titre_list.setText("Plat" + chaineEspace(10) + "Durée" + chaineEspace(6) + "Degrés"+ chaineEspace(2));
 
-
+        // données affichage brut
         String premierelement = transformeEnChaine("Pizza", 0, 22, 50) ;
         String secondElement = transformeEnChaine("Gratin dauphinois", 0, 50, 180);
         String troisiemeElement = transformeEnChaine("Tarte aux pommes", 0, 40, 205);
 
-
-        String[] elementCuisson = {"Pizza | 0 h 22 | 205","Gratin dauphinois | 0 h 50 | 180", "Tarte aux pommes | 0 h 40 | 205"};
-
         /* ********************* */
         //Création de la ArrayList qui nous permettra de remplir la listView
         listItem = new ArrayList<HashMap<String, String>>();
-
         //On déclare la HashMap qui contiendra les informations pour un item
         HashMap<String, String> map;
-
         //Création d'une HashMap pour insérer les informations du premier item de notre listView
         map = new HashMap<String, String>();
 
@@ -107,9 +103,9 @@ public class Afficher extends Fragment{
         list_recette = new ArrayList<>();
         String recetteLu;
         final String SEPARATEUR = ";";
-        /*try {
+        try {
             InputStreamReader fichier =
-                    new InputStreamReader(openFileInput(NOM_FICHIER));
+                    new InputStreamReader(getActivity().openFileInput(NOM_FICHIER));
             BufferedReader fichierTexte = new BufferedReader(fichier);
 
             while ( (recetteLu = fichierTexte.readLine())!= null ) {
@@ -130,22 +126,8 @@ public class Afficher extends Fragment{
             Log.e(TAG, "Le fichier " + NOM_FICHIER + " n'existe pas.");
         } catch (IOException e) {
             Log.e(TAG, "Problème de lecture dans le fichier " + NOM_FICHIER);
-        }*/
+        }
 
-
-        //on insère un élément titre que l'on récupérera dans le textView titre créé dans le fichier affichageitem.xml
-        map.put("ligne", premierelement);
-        //enfin on ajoute cette hashMap dans la arrayList
-        listItem.add(map);
-
-        //On refait la manip plusieurs fois avec des données différentes pour former les items de notre ListView
-        map = new HashMap<String, String>();
-        map.put("ligne", secondElement);
-        listItem.add(map);
-
-        map = new HashMap<String, String>();
-        map.put("ligne", troisiemeElement);
-        listItem.add(map);
 
         //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
         mSchedule = new SimpleAdapter (this.getContext(), listItem, R.layout.affichage_item, new String[] {"ligne"},
@@ -157,6 +139,18 @@ public class Afficher extends Fragment{
         registerForContextMenu(List_element);
 
         return vueDuFragment;
+    }
+
+    public void actuallisationListView(ArrayList<HashMap<String, String>> listItem){
+        //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
+        mSchedule = new SimpleAdapter (this.getContext(), listItem, R.layout.affichage_item, new String[] {"ligne"},
+                new int[] {R.id.ligne});
+
+        //On attribue à notre listView l'adapter que l'on vient de créer
+        List_element.setAdapter(mSchedule);
+
+        registerForContextMenu(List_element);
+
     }
 
     @Override
@@ -175,6 +169,9 @@ public class Afficher extends Fragment{
             case R.id.option1: // suppression de la ligne courrante
                 // on supprime de l'adaptateur l'article courant
                 //adaptateur.remove(listeAchat.get(information.position));
+                //Object obj = listItem.remove("Pizza");
+                //System.out.println(obj + " à été supprimé");
+                //actuallisationListView(listItem);
                 break;
             case R.id.option2: // voir thermostat
                 // récupération de la ligne de l'item
@@ -194,6 +191,11 @@ public class Afficher extends Fragment{
                 break;
         }
         return (super.onContextItemSelected(item));
+    }
+
+    public void suppresionItem(ArrayList<HashMap<String, String>> listItem){
+        Object obj = listItem.remove("Pizza");
+        System.out.println(obj + " à été supprimé");
     }
 
     /**
@@ -245,14 +247,6 @@ public class Afficher extends Fragment{
         } else if(temperature <= pallierTemperature[9]){
             return 10;
         }
-        return -1;
-    }
-
-    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-        // on affiche le nom du pays sélectionné dans le label
-        String messageToast = "" + listItem.get(position);
-        Toast.makeText(getActivity(), messageToast, Toast.LENGTH_LONG)
-                .show();
-        System.out.print(messageToast);
+        return 0;
     }
 }
