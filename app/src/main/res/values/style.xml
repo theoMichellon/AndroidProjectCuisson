@@ -12,7 +12,7 @@
         <!-- Style text -->
         <item name="android:gravity">center</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">25dp</item>
+        <item name="android:textSize">@dimen/taille_titre</item>
         <!-- couleur -->
         <item name="android:textColor">@color/brun</item>
     </style>
@@ -43,11 +43,12 @@
     </style>
 
     <!-- **************************
-            Titre des elements
+            Liste des elements
          ************************** -->
     <style name="element_list">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/marginLeft</item>
         <!-- Style text -->
         <item name="android:textSize">@dimen/taille_texte_liste</item>
         <item name="android:typeface">monospace</item>
