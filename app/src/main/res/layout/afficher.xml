@@ -10,7 +10,7 @@
     <TextView
         style="@style/titre_element"
         android:text=""
-        android:gravity="right"
+        android:gravity="left"
         android:id="@+id/titre_list"/>
 
     <ListView
