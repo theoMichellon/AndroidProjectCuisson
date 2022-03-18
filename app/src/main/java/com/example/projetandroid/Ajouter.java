@@ -122,7 +122,11 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     }
 
     /**
-     *
+     * Méthode permettant de créer une chaîne et de l'insérer dans un fichier
+     * @param plat nom du plat
+     * @param heure nombre d'heure de cuisson
+     * @param minutes nombre de minutes de cuisson
+     * @param temperature chaleur du four pour la cuisson
      */
     public void persistance(String plat, int heure, int minutes, int temperature) {
 
