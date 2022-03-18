@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Ajouter extends Fragment implements View.OnClickListener {
 
@@ -49,7 +53,7 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     private int temperatureCuisson;
     private int heure,
             minutes;
-
+    private ArrayList<HashMap<String, String>> listItem;
     /**
      * Constructeur vide
      */
@@ -130,12 +134,12 @@ public class Ajouter extends Fragment implements View.OnClickListener {
      */
     public void persistance(String plat, int heure, int minutes, int temperature) {
 
-        /* On insère toutes les valeurs dans le stringBuilder */
-        recette = transformeEnChaine(plat,heure, minutes, temperature);
+        /*for (int i = 0; i < listItem.size(); i++) {
 
+        }*/
         /* Ajout dans le fichier textes des nouvelles données */
-        System.out.print(recette);
-        try {
+
+        /*try {
             // déclaration et création de l'objet fichier
             FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
             fichier.write(recette.getBytes());
@@ -143,7 +147,9 @@ public class Ajouter extends Fragment implements View.OnClickListener {
 
         } catch (IOException ex) {
             System.out.println("Problème d'accès au fichier");
-        }
+        }*/
+
+
     }
 
 
@@ -171,11 +177,6 @@ public class Ajouter extends Fragment implements View.OnClickListener {
      * affichage d'un message toast validant l'action.
      */
     public void ajouter() {
-
-        // On prépare le message à afficher dans le toast en cas de validation
-        messsageToast = String.format(getResources()
-                .getString(R.string.ajoute), plat);
-
         if (!nomPlat.getText().toString().isEmpty()) {
             if (nomPlat.getText().toString().indexOf('|') != -1) {
                 alerte();
@@ -194,9 +195,17 @@ public class Ajouter extends Fragment implements View.OnClickListener {
                     heure = tempsCuisson.getHour();
                     minutes = tempsCuisson.getMinute();
 
+                    // On prépare le message à afficher dans le toast en cas de validation
+                    messsageToast = String.format(getResources()
+                            .getString(R.string.ajoute), plat);
                     persistance(plat, heure, minutes, temperatureCuisson);
                     Toast.makeText(getActivity(), messsageToast, Toast.LENGTH_LONG)
                             .show();
+
+                    /* On insère toutes les valeurs dans le stringBuilder */
+                    recette = transformeEnChaine(plat,heure, minutes, temperatureCuisson);
+                    Afficher.listItem.add(recette);
+
                 }
             } else {
                 alerte();
@@ -215,7 +224,6 @@ public class Ajouter extends Fragment implements View.OnClickListener {
 
             case R.id.btnValider:
                 ajouter();
-                activiteRecette.recevoirRecette(recette);
                 break;
         }
     }

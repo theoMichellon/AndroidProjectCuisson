@@ -17,8 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +27,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Afficher extends Fragment{
 
@@ -43,23 +42,42 @@ public class Afficher extends Fragment{
     // Déclaration de la vue associée
     private View vueDuFragment;
 
-    public ListView List_element;
+    private ListView List_element;
 
     public TextView titre_list;
 
-    public ArrayList<HashMap<String, String>> listItem;
+    public static ArrayList<String> listItem;
 
-    /** Liste des recettes présentés par l'application */
-    private ArrayList<String> list_recette;;
-
-    // Déclaration du simpleAdaptateur
-    public SimpleAdapter mSchedule;
+    /**
+     * Adaptateur permettant de gérer la liste affichée
+     */
+    private ArrayAdapter<String> adaptateur;
 
     /**
      * Constructeur vide
      */
     public Afficher() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        String recetteLu;
+        try {
+            InputStreamReader fichier =
+                    new InputStreamReader(getActivity().openFileInput(NOM_FICHIER));
+            BufferedReader fichierTexte = new BufferedReader(fichier);
+
+            while ( (recetteLu = fichierTexte.readLine())!= null ) {
+                adaptateur.add(recetteLu);
+            }
+            fichier.close();
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "Le fichier " + NOM_FICHIER + " n'existe pas.");
+        } catch (IOException e) {
+            Log.e(TAG, "Problème de lecture dans le fichier " + NOM_FICHIER);
+        }
     }
 
     /**
@@ -87,82 +105,24 @@ public class Afficher extends Fragment{
         titre_list = vueDuFragment.findViewById(R.id.titre_list);
 
         /* Affichage titre colonne */
-        titre_list.setText("Plat" + chaineEspace(10) + "Durée" + chaineEspace(6) + "Degrés"+ chaineEspace(2));
+        titre_list.setText(chaineEspace(7) + "Plat" + chaineEspace(10) + "Durée" + chaineEspace(6) + "Degrés"+ chaineEspace(2));
 
         // données affichage brut
         String premierelement = transformeEnChaine("Pizza", 0, 22, 50) ;
         String secondElement = transformeEnChaine("Gratin dauphinois", 0, 50, 180);
         String troisiemeElement = transformeEnChaine("Tarte aux pommes", 0, 40, 205);
 
+
         /* ********************* */
-        //Création de la ArrayList qui nous permettra de remplir la listView
-        listItem = new ArrayList<HashMap<String, String>>();
-        //On déclare la HashMap qui contiendra les informations pour un item
-        HashMap<String, String> map;
-        //Création d'une HashMap pour insérer les informations du premier item de notre listView
-        map = new HashMap<String, String>();
+        listItem = new ArrayList<String>();
+        adaptateur = new ArrayAdapter<String>(this.getContext(), R.layout.affichage_item, listItem);
 
-
-        /* ********** */
-        list_recette = new ArrayList<>();
-        String recetteLu;
-        final String SEPARATEUR = ";";
-        try {
-            InputStreamReader fichier =
-                    new InputStreamReader(getActivity().openFileInput(NOM_FICHIER));
-            BufferedReader fichierTexte = new BufferedReader(fichier);
-
-            while ( (recetteLu = fichierTexte.readLine())!= null ) {
-                map = new HashMap<String, String>();
-                map.put("ligne", recetteLu);
-                listItem.add(map);
-            }
-            fichier.close();
-        } catch (FileNotFoundException e) {
-            Log.e(TAG, "Le fichier " + NOM_FICHIER + " n'existe pas.");
-        } catch (IOException e) {
-            Log.e(TAG, "Problème de lecture dans le fichier " + NOM_FICHIER);
-        }
-
-
-        //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
-        mSchedule = new SimpleAdapter (this.getContext(), listItem, R.layout.affichage_item, new String[] {"ligne"},
-                new int[] {R.id.ligne});
-
-        //On attribue à notre listView l'adapter que l'on vient de créer
-        List_element.setAdapter(mSchedule);
-
+        List_element.setAdapter(adaptateur);
+        // on précise qu'un menu est associé à la liste qui correspond à l'activité
         registerForContextMenu(List_element);
-
-        /*
-         * on accède à l'activité parente du fragment, avec l'appel à getActivity
-         * Puis on invoque le getter de cette activité, pour récupérer la recette
-         * actuellement géré par l'activité
-         */
-        recetteLu = ((MainActivity) getActivity()).getRecetteAGerer();
-        /*
-         * Dans le cas où aucun nombre aléatoire n'a été généré (ie l'utilisateur n'a pas encore
-         * cliqué sur "Générer") , le nombre communiqué par l'activité principale est égal à -1.
-         * Si tel est le cas, il ne faut pas l'afficher. +9
-         */
-        if (recetteLu != null) {
-            mettreAJourRecette(recetteLu);
-        }
-
         return vueDuFragment;
     }
 
-    public void actuallisationListView(ArrayList<HashMap<String, String>> listItem){
-        //Création d'un SimpleAdapter qui se chargera de mettre les items présents dans notre list (listItem) dans la vue affichageitem
-        mSchedule = new SimpleAdapter (this.getContext(), listItem, R.layout.affichage_item, new String[] {"ligne"},
-                new int[] {R.id.ligne});
-
-        //On attribue à notre listView l'adapter que l'on vient de créer
-        List_element.setAdapter(mSchedule);
-
-        registerForContextMenu(List_element);
-
-    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -179,15 +139,13 @@ public class Afficher extends Fragment{
         switch(item.getItemId()) {
             case R.id.option1: // suppression de la ligne courrante
                 // on supprime de l'adaptateur l'article courant
-                //adaptateur.remove(listeAchat.get(information.position));
-                //Object obj = listItem.remove("Pizza");
-                //System.out.println(obj + " à été supprimé");
-                //actuallisationListView(listItem);
+                adaptateur.remove(listItem.get(information.position));
                 break;
 
             case R.id.option2: // voir thermostat
                 // récupération de la ligne de l'item
                 String s = "" + listItem.get(information.position);
+                
                 // récupération du nom de plat et de la température
                 int maxCharPlat = 27;  // nbre de caractères max pour plat
                 int maxCharDegre = 4;  // nbre de caractères max pour degrées
@@ -206,10 +164,6 @@ public class Afficher extends Fragment{
         return (super.onContextItemSelected(item));
     }
 
-    public void suppresionItem(ArrayList<HashMap<String, String>> listItem){
-        Object obj = listItem.remove("Pizza");
-        System.out.println(obj + " à été supprimé");
-    }
 
     /**
      * Méthode qui permet d'afficher l'alerte dialogue pour voir
@@ -234,11 +188,8 @@ public class Afficher extends Fragment{
      * @param recette
      */
     public void mettreAJourRecette(String recette) {
-        HashMap<String, String> map;
-        map = new HashMap<String, String>();
-        map.put("ligne", recette);
-        listItem.add(map);
-
-        List_element.setAdapter(mSchedule);
+        //null
     }
+
+
 }
