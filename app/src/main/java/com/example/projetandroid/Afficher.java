@@ -107,13 +107,7 @@ public class Afficher extends Fragment{
         /* Affichage titre colonne */
         titre_list.setText(chaineEspace(7) + "Plat" + chaineEspace(10) + "Durée" + chaineEspace(6) + "Degrés"+ chaineEspace(2));
 
-        // données affichage brut
-        String premierelement = transformeEnChaine("Pizza", 0, 22, 50) ;
-        String secondElement = transformeEnChaine("Gratin dauphinois", 0, 50, 180);
-        String troisiemeElement = transformeEnChaine("Tarte aux pommes", 0, 40, 205);
-
-
-        /* ********************* */
+         /* ********************* */
         listItem = new ArrayList<String>();
         adaptateur = new ArrayAdapter<String>(this.getContext(), R.layout.affichage_item, listItem);
 
@@ -145,13 +139,13 @@ public class Afficher extends Fragment{
             case R.id.option2: // voir thermostat
                 // récupération de la ligne de l'item
                 String s = "" + listItem.get(information.position);
-                
+                System.out.print("ALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" + s);
                 // récupération du nom de plat et de la température
-                int maxCharPlat = 27;  // nbre de caractères max pour plat
-                int maxCharDegre = 4;  // nbre de caractères max pour degrées
+                int maxCharPlat = 20;  // nbre de caractères max pour plat
+                int maxCharDegre = 3;  // nbre de caractères max pour degrées
                 int length = s.length(); // récupération taille de la ligne
-                String nomPlat = s.substring(7, maxCharPlat).trim();
-                String degree = s.substring(length -maxCharDegre, length-1);
+                String nomPlat = s.substring(0, maxCharPlat).trim();
+                String degree = s.substring(length -maxCharDegre, length);
                 // transformation String to int de la température
                 int temperature = Integer.parseInt(degree.trim());
                 // lancement message

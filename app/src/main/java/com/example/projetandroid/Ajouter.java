@@ -53,7 +53,8 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     private int temperatureCuisson;
     private int heure,
             minutes;
-    private ArrayList<HashMap<String, String>> listItem;
+
+    ArrayList<String> listItem;
     /**
      * Constructeur vide
      */
@@ -127,27 +128,24 @@ public class Ajouter extends Fragment implements View.OnClickListener {
 
     /**
      * Méthode permettant de créer une chaîne et de l'insérer dans un fichier
-     * @param plat nom du plat
-     * @param heure nombre d'heure de cuisson
-     * @param minutes nombre de minutes de cuisson
-     * @param temperature chaleur du four pour la cuisson
      */
-    public void persistance(String plat, int heure, int minutes, int temperature) {
+    public void persistance() {
 
-        /*for (int i = 0; i < listItem.size(); i++) {
 
-        }*/
         /* Ajout dans le fichier textes des nouvelles données */
 
-        /*try {
+        try {
             // déclaration et création de l'objet fichier
             FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
-            fichier.write(recette.getBytes());
+            for (String recette : Afficher.listItem) {
+                fichier.write(recette.getBytes());
+            }
+
             //fichier.close();
 
         } catch (IOException ex) {
             System.out.println("Problème d'accès au fichier");
-        }*/
+        }
 
 
     }
@@ -198,14 +196,13 @@ public class Ajouter extends Fragment implements View.OnClickListener {
                     // On prépare le message à afficher dans le toast en cas de validation
                     messsageToast = String.format(getResources()
                             .getString(R.string.ajoute), plat);
-                    persistance(plat, heure, minutes, temperatureCuisson);
                     Toast.makeText(getActivity(), messsageToast, Toast.LENGTH_LONG)
                             .show();
 
                     /* On insère toutes les valeurs dans le stringBuilder */
                     recette = transformeEnChaine(plat,heure, minutes, temperatureCuisson);
                     Afficher.listItem.add(recette);
-
+                    persistance();
                 }
             } else {
                 alerte();
