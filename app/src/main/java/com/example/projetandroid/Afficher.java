@@ -43,7 +43,6 @@ public class Afficher extends Fragment{
     // Déclaration de la vue associée
     private View vueDuFragment;
 
-
     public ListView List_element;
 
     public TextView titre_list;
@@ -135,6 +134,21 @@ public class Afficher extends Fragment{
 
         registerForContextMenu(List_element);
 
+        /*
+         * on accède à l'activité parente du fragment, avec l'appel à getActivity
+         * Puis on invoque le getter de cette activité, pour récupérer la recette
+         * actuellement géré par l'activité
+         */
+        recetteLu = ((MainActivity) getActivity()).getRecetteAGerer();
+        /*
+         * Dans le cas où aucun nombre aléatoire n'a été généré (ie l'utilisateur n'a pas encore
+         * cliqué sur "Générer") , le nombre communiqué par l'activité principale est égal à -1.
+         * Si tel est le cas, il ne faut pas l'afficher. +9
+         */
+        if (recetteLu != null) {
+            mettreAJourRecette(recetteLu);
+        }
+
         return vueDuFragment;
     }
 
@@ -170,6 +184,7 @@ public class Afficher extends Fragment{
                 //System.out.println(obj + " à été supprimé");
                 //actuallisationListView(listItem);
                 break;
+
             case R.id.option2: // voir thermostat
                 // récupération de la ligne de l'item
                 String s = "" + listItem.get(information.position);
@@ -184,6 +199,7 @@ public class Afficher extends Fragment{
                 // lancement message
                 AlerteMessage(nomPlat, temperature);
                 break;
+
             case R.id.option3: // annuler : retour à la list principale
                 break;
         }
@@ -218,6 +234,11 @@ public class Afficher extends Fragment{
      * @param recette
      */
     public void mettreAJourRecette(String recette) {
+        HashMap<String, String> map;
+        map = new HashMap<String, String>();
+        map.put("ligne", recette);
+        listItem.add(map);
 
+        List_element.setAdapter(mSchedule);
     }
 }

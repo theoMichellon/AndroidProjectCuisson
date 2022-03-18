@@ -18,6 +18,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
  * @author Théo Michellon
  */
 public class MainActivity extends AppCompatActivity implements Ajouter.EcouteurGeneration {
+
+    private String recetteAGerer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements Ajouter.EcouteurG
                 }).attach();
     }
 
+    public String getRecetteAGerer() {
+        return recetteAGerer;
+    }
+
     @Override
     public void recevoirRecette(String recette) {
         /* on récupère, via le FragmentManager, un accès au fragment deux.
@@ -71,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements Ajouter.EcouteurG
          * envoyer le nombre aléatoire à afficher
          */
         if (fragmentAModifier != null) {
-            fragmentAModifier.mettreAJourRecette(recette);
+            fragmentAModifier.mettreAJourRecette(recetteAGerer);
         }
     }
 }
