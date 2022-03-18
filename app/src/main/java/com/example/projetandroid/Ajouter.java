@@ -1,5 +1,7 @@
 package com.example.projetandroid;
 
+import static com.example.projetandroid.OutilCuisson.transformeEnChaine;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -14,22 +16,21 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 
 public class Ajouter extends Fragment implements View.OnClickListener {
 
     // Déclaration de la vue
     private View vueDuFragment;
 
+    // Déclaration de l'écouteur
+    private EcouteurGeneration activiteRecette;
+
     // Déclaration du fichier dans lequel les écritures vont se faire
     private static final String NOM_FICHIER = "cuisson.txt";
 
     // Déclaration du StringBuilder permettant de construire le string à add
-    private StringBuilder recette = new StringBuilder();
+    private String recette;
 
     // Déclaration du timePicker
     private TimePicker tempsCuisson;
@@ -49,9 +50,20 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     private int heure,
             minutes;
 
+    /**
+     * Constructeur vide
+     */
     public Ajouter() {
         // Required empty public constructor
     }
+
+    /**
+     * ecouteur
+     */
+    public interface EcouteurGeneration {
+        void recevoirRecette(String recette);
+    }
+
     /**
      * Cette méthode est une "factory" : son rôle est de créer une nouvelle instance
      * du fragment de type FragmentUn
@@ -65,6 +77,13 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context contexte) {
+        super.onAttach(contexte);
+        // contexte est l'activité parente du fragment, donc l'activité principale
+        activiteRecette = (EcouteurGeneration) contexte;
     }
 
     @Override
@@ -108,22 +127,15 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     public void persistance(String plat, int heure, int minutes, int temperature) {
 
         /* On insère toutes les valeurs dans le stringBuilder */
-        recette.append(plat);
-        recette.append(';');
-        recette.append(heure);
-        recette.append(';');
-        recette.append(minutes);
-        recette.append(';');
-        recette.append(temperature);
-        recette.append('\n');
+        recette = transformeEnChaine(plat,heure, minutes, temperature);
 
         /* Ajout dans le fichier textes des nouvelles données */
 
         try {
             // déclaration et création de l'objet fichier
             FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
-            fichier.write(String.valueOf(recette).getBytes());
-            fichier.close();
+            fichier.write(recette.getBytes());
+            //fichier.close();
 
         } catch (IOException ex) {
             System.out.println("Problème d'accès au fichier");
@@ -199,6 +211,7 @@ public class Ajouter extends Fragment implements View.OnClickListener {
 
             case R.id.btnValider:
                 ajouter();
+                activiteRecette.recevoirRecette(recette);
                 break;
         }
     }

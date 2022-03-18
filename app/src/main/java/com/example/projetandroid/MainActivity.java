@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
  * @author Tatiana Borgi
  * @author Théo Michellon
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Ajouter.EcouteurGeneration {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,5 +56,22 @@ public class MainActivity extends AppCompatActivity {
                         tab.setText(titreOnglet[position]);
                     }
                 }).attach();
+    }
+
+    @Override
+    public void recevoirRecette(String recette) {
+        /* on récupère, via le FragmentManager, un accès au fragment deux.
+         * En interne, ce fragment a l'identifiant "f1". Cet identifiant est attributé
+         * automatiquement par Android
+         */
+        Afficher fragmentAModifier =
+                (Afficher) getSupportFragmentManager().findFragmentByTag("f1");
+        /* Si l'utilisateur n'a pas encore activé l'onglet numéro 2, le fragment f1 n'existe pas
+         * encore. Dans ce cas, fragmentAModifier est égal à null. On ne peut donc pas lui
+         * envoyer le nombre aléatoire à afficher
+         */
+        if (fragmentAModifier != null) {
+            fragmentAModifier.mettreAJourRecette(recette);
+        }
     }
 }

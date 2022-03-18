@@ -54,6 +54,10 @@ public class Afficher extends Fragment{
 
     // Déclaration du simpleAdaptateur
     public SimpleAdapter mSchedule;
+
+    /**
+     * Constructeur vide
+     */
     public Afficher() {
         // Required empty public constructor
     }
@@ -115,10 +119,10 @@ public class Afficher extends Fragment{
                 int heures = Integer.parseInt(ligne[1]);
                 int minutes = Integer.parseInt(ligne[2]);
                 int température = Integer.parseInt(ligne[3]);
-                String truc = transformeEnChaine(nomPlat, heures, minutes, température) ;
+                String recette = transformeEnChaine(nomPlat, heures, minutes, température) ;
 
                 map = new HashMap<String, String>();
-                map.put("ligne", truc);
+                map.put("ligne", recette);
                 listItem.add(map);
             }
             fichier.close();
@@ -214,6 +218,14 @@ public class Afficher extends Fragment{
                 .setMessage(message)
                 .setNeutralButton(R.string.ad_texteRetour, null)
                 .show();
+    }
+
+    /**
+     *
+     * @param recette
+     */
+    public void mettreAJourRecette(String recette) {
+
     }
 
     /**
