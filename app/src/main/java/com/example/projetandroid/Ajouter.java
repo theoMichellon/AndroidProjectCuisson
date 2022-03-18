@@ -80,6 +80,13 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        persistance();
+    }
+
+
+    @Override
     public void onAttach(Context contexte) {
         super.onAttach(contexte);
         // contexte est l'activité parente du fragment, donc l'activité principale
@@ -126,24 +133,23 @@ public class Ajouter extends Fragment implements View.OnClickListener {
      * Méthode permettant de créer une chaîne et de l'insérer dans un fichier
      */
     public void persistance() {
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         /* Ajout dans le fichier textes des nouvelles données */
-
         try {
             // déclaration et création de l'objet fichier
             FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
 
             for (String recette : Afficher.listItem) {
+                recette = recette + "\n";
                 fichier.write(recette.getBytes());
             }
-
             //fichier.close();
-
         } catch (IOException ex) {
             System.out.println("Problème d'accès au fichier");
         }
-
-
     }
 
 
@@ -199,9 +205,13 @@ public class Ajouter extends Fragment implements View.OnClickListener {
                     /* On insère toutes les valeurs dans le stringBuilder */
                     recette = transformeEnChaine(plat,heure, minutes, temperatureCuisson);
                     Afficher.listItem.add(recette);
+<<<<<<< Updated upstream
 
                     persistance();
 
+=======
+                    effacer();
+>>>>>>> Stashed changes
                 }
             } else {
                 alerte();

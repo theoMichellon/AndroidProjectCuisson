@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -137,12 +139,12 @@ public class Afficher extends Fragment{
             case R.id.option1: // suppression de la ligne courrante
                 // on supprime de l'adaptateur l'article courant
                 adaptateur.remove(listItem.get(information.position));
+                persistance();
                 break;
 
             case R.id.option2: // voir thermostat
                 // récupération de la ligne de l'item
                 String s = "" + listItem.get(information.position);
-                System.out.print("ALOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO" + s);
                 // récupération du nom de plat et de la température
                 int maxCharPlat = 20;  // nbre de caractères max pour plat
                 int maxCharDegre = 3;  // nbre de caractères max pour degrées
@@ -161,6 +163,27 @@ public class Afficher extends Fragment{
         return (super.onContextItemSelected(item));
     }
 
+<<<<<<< Updated upstream
+=======
+    /**
+     * Méthode permetant de l'insérer dans un fichier
+     */
+    public void persistance() {
+        /* Ajout dans le fichier textes des nouvelles données */
+        try {
+            // déclaration et création de l'objet fichier
+            FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
+            for (String recette : Afficher.listItem) {
+                recette = recette + "\n";
+                fichier.write(recette.getBytes());
+            }
+            //fichier.close();
+        } catch (IOException ex) {
+            System.out.println("Problème d'accès au fichier");
+        }
+    }
+
+>>>>>>> Stashed changes
     /**
      * Méthode qui permet d'afficher l'alerte dialogue pour voir
      * le réglage du thermostat
@@ -178,7 +201,6 @@ public class Afficher extends Fragment{
                 .setNeutralButton(R.string.ad_texteRetour, null)
                 .show();
     }
-
     /**
      *
      * @param recette
@@ -186,6 +208,4 @@ public class Afficher extends Fragment{
     public void mettreAJourRecette(String recette) {
         //null
     }
-
-
 }

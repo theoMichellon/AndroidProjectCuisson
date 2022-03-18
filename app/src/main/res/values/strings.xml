@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjetAndroid</string>
+    <string name="app_name">"Application Cuisson"</string>
     <string name="onglet_afficher">Afficher</string>
     <string name="onglet_ajouter">Ajouter</string>
 </resources>
