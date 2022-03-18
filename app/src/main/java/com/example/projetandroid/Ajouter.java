@@ -130,7 +130,7 @@ public class Ajouter extends Fragment implements View.OnClickListener {
         recette = transformeEnChaine(plat,heure, minutes, temperature);
 
         /* Ajout dans le fichier textes des nouvelles données */
-
+        System.out.print(recette);
         try {
             // déclaration et création de l'objet fichier
             FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);

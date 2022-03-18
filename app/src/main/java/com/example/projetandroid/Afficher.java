@@ -1,6 +1,7 @@
 package com.example.projetandroid;
 
 import static com.example.projetandroid.OutilCuisson.chaineEspace;
+import static com.example.projetandroid.OutilCuisson.thermostat;
 import static com.example.projetandroid.OutilCuisson.transformeEnChaine;
 
 import androidx.annotation.NonNull;
@@ -113,16 +114,8 @@ public class Afficher extends Fragment{
             BufferedReader fichierTexte = new BufferedReader(fichier);
 
             while ( (recetteLu = fichierTexte.readLine())!= null ) {
-
-                String ligne[] = recetteLu.split(SEPARATEUR);
-                String nomPlat =ligne[0];
-                int heures = Integer.parseInt(ligne[1]);
-                int minutes = Integer.parseInt(ligne[2]);
-                int température = Integer.parseInt(ligne[3]);
-                String recette = transformeEnChaine(nomPlat, heures, minutes, température) ;
-
                 map = new HashMap<String, String>();
-                map.put("ligne", recette);
+                map.put("ligne", recetteLu);
                 listItem.add(map);
             }
             fichier.close();
@@ -211,7 +204,7 @@ public class Afficher extends Fragment{
      */
     private void AlerteMessage(String Plat, int temperature) {
         // création du message à afficher
-        String message = getString(R.string.ad_message, Plat, temperature, calculTempérature(temperature));
+        String message = getString(R.string.ad_message, Plat, temperature, thermostat(temperature));
         //lancement de l'alerte Dialogue
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.ad_titre)
@@ -226,39 +219,5 @@ public class Afficher extends Fragment{
      */
     public void mettreAJourRecette(String recette) {
 
-    }
-
-    /**
-     * Méthode qui permet de savoir quel thermostat utiliser selon la tempéréature
-     *
-     * @param temperature : température du plat
-     * @return un int qui correspond au thermostat
-     */
-    private int calculTempérature(int temperature){
-        // tableau des différents pallier pour le thermostat
-        int[] pallierTemperature = {30,60,90,120,150,180,210,240,270};
-        // retourne la valeur du thermostat
-        if(temperature < pallierTemperature[0]){
-            return 1;
-        } else if(temperature < pallierTemperature[1]){
-            return 2;
-        } else if(temperature < pallierTemperature[2]){
-            return 3;
-        } else if(temperature < pallierTemperature[3]){
-            return 4;
-        } else if(temperature < pallierTemperature[4]){
-            return 5;
-        } else if(temperature < pallierTemperature[5] ){
-            return 6;
-        } else if(temperature < pallierTemperature[6]){
-            return 7;
-        } else if(temperature < pallierTemperature[7]){
-            return 8;
-        } else if(temperature < pallierTemperature[8]){
-            return 9;
-        } else if(temperature <= pallierTemperature[9]){
-            return 10;
-        }
-        return 0;
     }
 }
