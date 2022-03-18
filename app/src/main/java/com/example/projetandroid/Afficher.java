@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -41,11 +42,11 @@ public class Afficher extends Fragment{
     // Déclaration de la vue associée
     private View vueDuFragment;
 
-    public ListView List_element;
+    private ListView List_element;
 
     public TextView titre_list;
 
-    private ArrayList<String> listItem;
+    public static ArrayList<String> listItem;
 
     /**
      * Adaptateur permettant de gérer la liste affichée
@@ -111,25 +112,17 @@ public class Afficher extends Fragment{
         String secondElement = transformeEnChaine("Gratin dauphinois", 0, 50, 180);
         String troisiemeElement = transformeEnChaine("Tarte aux pommes", 0, 40, 205);
 
+
         /* ********************* */
         listItem = new ArrayList<String>();
         adaptateur = new ArrayAdapter<String>(this.getContext(), R.layout.affichage_item, listItem);
 
         List_element.setAdapter(adaptateur);
-        //List_element.setOnItemClickListener(this.getContext());
+        // on précise qu'un menu est associé à la liste qui correspond à l'activité
+        registerForContextMenu(List_element);
         return vueDuFragment;
     }
 
-
-
-    /**
-     * Ajoute la recette à la l'adapter et afficher à nouveau la liste
-     * @param recette
-     */
-    public void ajoutRecette(String recette){
-        listItem.add(recette);
-
-    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -146,15 +139,13 @@ public class Afficher extends Fragment{
         switch(item.getItemId()) {
             case R.id.option1: // suppression de la ligne courrante
                 // on supprime de l'adaptateur l'article courant
-                //adaptateur.remove(listeAchat.get(information.position));
-                //Object obj = listItem.remove("Pizza");
-                //System.out.println(obj + " à été supprimé");
+                adaptateur.remove(listItem.get(information.position));
                 break;
 
             case R.id.option2: // voir thermostat
                 // récupération de la ligne de l'item
-                //String s = "" + getListItem().get(information.position);
-                String s ="";
+                String s = "" + listItem.get(information.position);
+                
                 // récupération du nom de plat et de la température
                 int maxCharPlat = 27;  // nbre de caractères max pour plat
                 int maxCharDegre = 4;  // nbre de caractères max pour degrées
@@ -197,11 +188,8 @@ public class Afficher extends Fragment{
      * @param recette
      */
     public void mettreAJourRecette(String recette) {
-
+        //null
     }
 
-    public ArrayAdapter<String> getAdaptateur(){
-        return adaptateur;
-    }
 
 }

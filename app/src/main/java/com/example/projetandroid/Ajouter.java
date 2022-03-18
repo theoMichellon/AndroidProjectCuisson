@@ -134,10 +134,12 @@ public class Ajouter extends Fragment implements View.OnClickListener {
      */
     public void persistance(String plat, int heure, int minutes, int temperature) {
 
+        /*for (int i = 0; i < listItem.size(); i++) {
 
+        }*/
         /* Ajout dans le fichier textes des nouvelles données */
-        /*
-        try {
+
+        /*try {
             // déclaration et création de l'objet fichier
             FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
             fichier.write(recette.getBytes());
@@ -145,8 +147,8 @@ public class Ajouter extends Fragment implements View.OnClickListener {
 
         } catch (IOException ex) {
             System.out.println("Problème d'accès au fichier");
-        }
-        */
+        }*/
+
 
     }
 
@@ -202,7 +204,8 @@ public class Ajouter extends Fragment implements View.OnClickListener {
 
                     /* On insère toutes les valeurs dans le stringBuilder */
                     recette = transformeEnChaine(plat,heure, minutes, temperatureCuisson);
-                    Afficher.newInstance().ajoutRecette(recette);
+                    Afficher.listItem.add(recette);
+
                 }
             } else {
                 alerte();
