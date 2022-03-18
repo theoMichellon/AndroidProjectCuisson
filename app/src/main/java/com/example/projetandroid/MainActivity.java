@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
  */
 public class MainActivity extends AppCompatActivity implements Ajouter.EcouteurGeneration {
 
+    // Déclaration du string permettant de gérer la recette à ajouter
     private String recetteAGerer;
 
     @Override

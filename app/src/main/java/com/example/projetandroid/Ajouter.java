@@ -43,10 +43,6 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     private EditText nomPlat;
     private EditText temperature;
 
-    // Déclaration des boutons
-    private Button effacer;
-    private Button ajouter;
-
     // Déclaration des variables permettant de récupérer les valeurs
     private String plat;
     private String messsageToast;
@@ -54,7 +50,6 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     private int heure,
             minutes;
 
-    ArrayList<String> listItem;
     /**
      * Constructeur vide
      */
@@ -63,7 +58,7 @@ public class Ajouter extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * ecouteur
+     * Ecouteur
      */
     public interface EcouteurGeneration {
         void recevoirRecette(String recette);
@@ -103,6 +98,7 @@ public class Ajouter extends Fragment implements View.OnClickListener {
         nomPlat = (EditText) vueDuFragment.findViewById(R.id.txtPlat);
         temperature = (EditText) vueDuFragment.findViewById(R.id.txtTemp);
 
+        // Ecouteur permettant de détecter un clic sur un bouton
         vueDuFragment.findViewById(R.id.btnValider).setOnClickListener(this);
         vueDuFragment.findViewById(R.id.btnEffacer).setOnClickListener(this);
 
@@ -131,12 +127,12 @@ public class Ajouter extends Fragment implements View.OnClickListener {
      */
     public void persistance() {
 
-
         /* Ajout dans le fichier textes des nouvelles données */
 
         try {
             // déclaration et création de l'objet fichier
             FileOutputStream fichier = getActivity().openFileOutput("cuisson.txt", Context.MODE_PRIVATE);
+
             for (String recette : Afficher.listItem) {
                 fichier.write(recette.getBytes());
             }
@@ -196,13 +192,16 @@ public class Ajouter extends Fragment implements View.OnClickListener {
                     // On prépare le message à afficher dans le toast en cas de validation
                     messsageToast = String.format(getResources()
                             .getString(R.string.ajoute), plat);
+
                     Toast.makeText(getActivity(), messsageToast, Toast.LENGTH_LONG)
                             .show();
 
                     /* On insère toutes les valeurs dans le stringBuilder */
                     recette = transformeEnChaine(plat,heure, minutes, temperatureCuisson);
                     Afficher.listItem.add(recette);
+
                     persistance();
+
                 }
             } else {
                 alerte();

@@ -42,10 +42,13 @@ public class Afficher extends Fragment{
     // Déclaration de la vue associée
     private View vueDuFragment;
 
+    // Déclaration de la ListView
     private ListView List_element;
 
+    //Déclaration du TextView
     public TextView titre_list;
 
+    //Déclaration de l'ArrayList dans laquelle sera stocké les item
     public static ArrayList<String> listItem;
 
     /**
@@ -157,7 +160,6 @@ public class Afficher extends Fragment{
         }
         return (super.onContextItemSelected(item));
     }
-
 
     /**
      * Méthode qui permet d'afficher l'alerte dialogue pour voir
